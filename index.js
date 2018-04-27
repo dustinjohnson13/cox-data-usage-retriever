@@ -6,9 +6,9 @@ const coxUrl = 'https://www.cox.com/residential/home.html'
 const coxDataUsageUrl = 'https://www.cox.com/internet/mydatausage.cox'
 
 const signInLinkSelector = '#pf-signin-trigger'
-const usernameFieldSelector = '#pf-username'
-const passwordFieldSelector = '#pf-password'
-const submitLinkSelector = '.pf-sign-in-submit-form'
+const usernameFieldSelector = '#userid'
+const passwordFieldSelector = '#user-password'
+const submitLinkSelector = '.signin'
 
 const firstModemSelector = '.ubm-details.modem-no-0'
 const dataUsedPercentageSelector = `${firstModemSelector} .data-used-per`
@@ -24,7 +24,7 @@ const run = async (username, password) => {
         try {
             browser = await puppeteer.launch({headless: true})
             const page = await browser.newPage()
-            await page.goto(coxUrl, waitOptions)
+            await page.goto(coxDataUsageUrl, waitOptions)
 
             await signIn(page, username, password)
             const [raw, percentage] = await loadDataUsage(page)
@@ -48,17 +48,12 @@ const signIn = async (page, username, password) => {
     const response = await Promise.all([
         page.waitForSelector(passwordFieldSelector),
         page.waitForSelector(usernameFieldSelector),
-        page.click(signInLinkSelector)
     ])
-    // Not sure why, but the first time trying to type in a field doesn't work
     await page.focus(passwordFieldSelector)
     await page.type(passwordFieldSelector, password, {delay: typingDelay})
 
     await page.focus(usernameFieldSelector)
     await page.type(usernameFieldSelector, username, {delay: typingDelay})
-
-    await page.focus(passwordFieldSelector)
-    await page.type(passwordFieldSelector, password, {delay: typingDelay})
 
     return Promise.all([
         page.waitForNavigation(waitOptions),
@@ -72,7 +67,6 @@ const querySelector = selector => {
 }
 
 const loadDataUsage = async page => {
-    await page.goto(coxDataUsageUrl, waitOptions)
     await page.waitForSelector(firstModemSelector)
 
     const dataUsed = await page.evaluate(querySelector, dataUsedSelector);

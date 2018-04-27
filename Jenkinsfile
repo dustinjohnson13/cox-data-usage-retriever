@@ -14,7 +14,8 @@ stage('Run') {
             checkout scm
 
             def dataUsage = sh(script: './gradlew run', returnStdout: true)
-            email = [to: emailAddress, from: emailAddress, subject: "Data Usage - ${new Date().format('yyyy/MM/dd')}", body: "${dataUsage}"]
+            def summary = (dataUsage =~ /Usage:.*%/)[0]
+            email = [to: emailAddress, from: emailAddress, subject: "Data Usage - ${summary} - ${new Date().format('yyyy/MM/dd')}", body: "${dataUsage}"]
         } catch (err) {
             currentBuild.result = "FAILURE"
 
