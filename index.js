@@ -22,7 +22,7 @@ const run = async (username, password) => {
     let browser
     while (attempts < maxAttempts) {
         try {
-            browser = await puppeteer.launch({headless: false})
+            browser = await puppeteer.launch({headless: true})
             const page = await browser.newPage()
             await page.goto(coxUrl, waitOptions)
 
