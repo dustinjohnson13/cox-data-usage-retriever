@@ -5,10 +5,9 @@ const waitOptions = {waitUntil: 'networkidle0'}
 const coxUrl = 'https://www.cox.com/residential/home.html'
 const coxDataUsageUrl = 'https://www.cox.com/internet/mydatausage.cox'
 
-const signInLinkSelector = '#pf-signin-trigger'
-const usernameFieldSelector = '#userid'
-const passwordFieldSelector = '#user-password'
-const submitLinkSelector = '.signin'
+const usernameFieldSelector = '#username'
+const passwordFieldSelector = '#password'
+const submitLinkSelector = '.sign-in-validate'
 
 const firstModemSelector = '.ubm-details.modem-no-0'
 const dataUsedPercentageSelector = `${firstModemSelector} .data-used-per`
