@@ -23,10 +23,7 @@ stage('Run') {
 
             throw err
         } finally {
-            def notify = [email: email]
-
-            def cmd = env.NOTIFY_COMMAND + " -d '${JsonOutput.toJson(notify)}'"
-            sh cmd
+            emailext body: email.body, recipientProviders: [[$class: 'DevelopersRecipientProvider']], subject: email.subject, to: "${env.EMAIL}"
         }
     }
 }
