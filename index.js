@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer')
 
 const maxAttempts = 5
-const waitOptions = {waitUntil: 'networkidle0', timeout: 90000}
+const waitOptions = {waitUntil: 'networkidle2', timeout: 90000}
 const coxUrl = 'https://www.cox.com/residential/home.html'
 const coxDataUsageUrl = 'https://www.cox.com/internet/mydatausage.cox'
 
